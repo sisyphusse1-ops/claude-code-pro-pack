@@ -59,14 +59,6 @@ Past ~200 lines of CLAUDE.md, compliance drops sharply — rules get buried. The
 
 MIT. Fork it, modify it, redistribute it, ship it in your company guide.
 
-## Support the work
-
-If this pack saved you an afternoon of debugging, a small tip keeps the updates coming:
-
-- PayPal: [paypal.me/dfuum](https://paypal.me/dfuum)
-- GitHub Sponsors: button above
-- Best of all: open an issue with a 13th rule that earned its place from a specific failure.
-
 ## Related
 
 - Karpathy's original CLAUDE.md — the 4-rule floor this builds on.
