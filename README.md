@@ -61,9 +61,23 @@ MIT. Fork it, modify it, redistribute it, ship it in your company guide.
 
 ## Related
 
-- Karpathy's original CLAUDE.md — the 4-rule floor this builds on.
-- Browserbase Autobrowse — inspiration for the browser-skill-graduation template.
-- Hermes Agent — reference implementation for the skill format.
+- **Karpathy's original CLAUDE.md** — the 4-rule floor this pack builds on.
+- **[anthropic/skills](https://github.com/anthropics/skills)** — Anthropic's official Agent Skills repo. Use our pack as the behavioral baseline (`CLAUDE.md`), then layer their skills on top.
+- **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)** — lifecycle slash commands (`/spec`, `/plan`, `/build`, `/test`, `/review`, `/ship`). Complements the pack — our 12 rules tell the agent *how to behave*, their skills tell it *what workflow to follow*.
+- **Browserbase Autobrowse** — inspiration for the `browser-skill-graduation` template.
+- **Hermes Agent** — reference implementation for the skill format.
+
+## How this differs
+
+| | This pack | anthropic/skills | addyosmani/agent-skills |
+|---|---|---|---|
+| Shape | Drop-in CLAUDE.md + 5 example skills | Plugin marketplace | Plugin with slash commands |
+| Install | Copy one file | `/plugin install` | `/plugin install` |
+| Focus | Agent behavior baseline | Domain skills catalog | Dev lifecycle workflow |
+| Token cost | ~700 total | Per-skill | Per-skill + hook |
+| Works with | Claude Code, Codex, Cursor, Hermes, Copilot | Claude Code | Claude Code, Cursor, Gemini CLI |
+
+Use all three — pack for behavior, anthropic/skills for domain tasks, addyosmani for lifecycle flow.
 
 ---
 
