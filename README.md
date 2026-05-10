@@ -61,6 +61,7 @@ MIT. Fork it, modify it, redistribute it, ship it in your company guide.
 
 ## Related
 
+- **[cc-audit](https://github.com/sisyphusse1-ops/cc-audit)** — one-file Python linter that scores any `CLAUDE.md` / `AGENTS.md` against this 12-rule baseline. Use in CI.
 - **Karpathy's original CLAUDE.md** — the 4-rule floor this pack builds on.
 - **[anthropic/skills](https://github.com/anthropics/skills)** — Anthropic's official Agent Skills repo. Use our pack as the behavioral baseline (`CLAUDE.md`), then layer their skills on top.
 - **[addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)** — lifecycle slash commands (`/spec`, `/plan`, `/build`, `/test`, `/review`, `/ship`). Complements the pack — our 12 rules tell the agent *how to behave*, their skills tell it *what workflow to follow*.
