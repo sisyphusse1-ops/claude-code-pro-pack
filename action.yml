@@ -1,0 +1,79 @@
+name: 'Install claude-code-pro-pack'
+description: 'Drop the 12-rule CLAUDE.md / AGENTS.md baseline + templates into the current repo.'
+author: 'sisyphusse1-ops'
+branding:
+  icon: 'download'
+  color: 'purple'
+
+inputs:
+  flavor:
+    description: 'Which behavior file to install: claude | agents | both (default: both)'
+    required: false
+    default: 'both'
+  install-templates:
+    description: 'Also copy templates/ and examples/ into the repo (default: false)'
+    required: false
+    default: 'false'
+  overwrite:
+    description: 'Overwrite existing CLAUDE.md / AGENTS.md (default: false)'
+    required: false
+    default: 'false'
+
+outputs:
+  installed:
+    description: 'Comma-separated list of files written'
+    value: ${{ steps.install.outputs.installed }}
+  skipped:
+    description: 'Comma-separated list of files skipped (already existed)'
+    value: ${{ steps.install.outputs.skipped }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install pro-pack files
+      id: install
+      shell: bash
+      run: |
+        set -eo pipefail
+        SRC="${GITHUB_ACTION_PATH}"
+        FLAVOR="${{ inputs.flavor }}"
+        OVER="${{ inputs.overwrite }}"
+        INSTALLED=""
+        SKIPPED=""
+
+        copy_if_needed() {
+          local src=$1 dst=$2
+          if [ -f "$dst" ] && [ "$OVER" != "true" ]; then
+            SKIPPED="${SKIPPED:+$SKIPPED,}$dst"
+          else
+            cp "$src" "$dst"
+            INSTALLED="${INSTALLED:+$INSTALLED,}$dst"
+          fi
+        }
+
+        case "$FLAVOR" in
+          claude)  copy_if_needed "$SRC/CLAUDE.md" "CLAUDE.md" ;;
+          agents)  copy_if_needed "$SRC/AGENTS.md" "AGENTS.md" ;;
+          both)    copy_if_needed "$SRC/CLAUDE.md" "CLAUDE.md"
+                   copy_if_needed "$SRC/AGENTS.md" "AGENTS.md" ;;
+          *)       echo "::error::flavor must be claude | agents | both"; exit 2 ;;
+        esac
+
+        if [ "${{ inputs.install-templates }}" = "true" ]; then
+          mkdir -p .claude-pack/templates .claude-pack/examples
+          cp -n "$SRC"/templates/*.md .claude-pack/templates/ 2>/dev/null || true
+          cp -n "$SRC"/examples/*.md .claude-pack/examples/ 2>/dev/null || true
+          INSTALLED="${INSTALLED:+$INSTALLED,}.claude-pack/"
+        fi
+
+        echo "installed=$INSTALLED" >> "$GITHUB_OUTPUT"
+        echo "skipped=$SKIPPED" >> "$GITHUB_OUTPUT"
+
+        {
+          echo "## claude-code-pro-pack installed"
+          echo
+          echo "**Written:** \`${INSTALLED:-nothing}\`"
+          [ -n "$SKIPPED" ] && echo "**Skipped (already existed):** \`$SKIPPED\`"
+          echo
+          echo "[Ruleset](https://github.com/sisyphusse1-ops/claude-code-pro-pack) · [cc-audit linter](https://github.com/sisyphusse1-ops/cc-audit)"
+        } >> "$GITHUB_STEP_SUMMARY"
